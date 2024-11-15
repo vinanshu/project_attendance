@@ -1,0 +1,132 @@
+/* Scan Page Styles */
+.scan-container {
+    max-width: 900px;
+    margin: 50px auto;
+    padding: 40px;
+    background-color: #ffffff;
+    border-radius: 15px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    font-family: 'Arial', sans-serif;
+  }
+  
+  .scan-title {
+    text-align: center;
+    font-size: 2.5rem;
+    color: #333;
+    margin-bottom: 40px;
+  }
+  
+  .action-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+  }
+  
+  button {
+    padding: 15px 30px;
+    font-size: 1.2rem;
+    margin: 15px;
+    cursor: pointer;
+    border-radius: 8px;
+    border: none;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    color: white;
+    display: inline-block;
+  }
+  
+  button:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px);
+  }
+  
+  button:focus {
+    outline: none;
+  }
+  
+  button.in-btn {
+    background-color: #28a745;
+  }
+  
+  button.out-btn {
+    background-color: #dc3545;
+  }
+  
+  button.in-btn:hover {
+    background-color: #218838;
+  }
+  
+  button.out-btn:hover {
+    background-color: #c82333;
+  }
+  
+  .scanner-container {
+    text-align: center;
+    margin-top: 30px;
+  }
+  
+  .scanner-message {
+    font-size: 1.1rem;
+    color: #666;
+    margin-top: 20px;
+  }
+  
+  .scan-result, .status-message {
+    font-size: 1.2rem;
+    margin-top: 20px;
+    text-align: center;
+    color: #333;
+  }
+  
+  .history-btn,
+  .logout-btn {
+    margin-top: 40px;
+    padding: 14px 30px;
+    font-size: 1.2rem;
+    width: 100%;
+    max-width: 280px;
+    cursor: pointer;
+    border-radius: 8px;
+    border: none;
+    color: white;
+    background-color: #007bff;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+  }
+  
+  .history-btn:hover,
+  .logout-btn:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px);
+  }
+  
+  /* Mobile Responsiveness */
+  @media (max-width: 480px) {
+    .scan-container {
+      padding: 20px;
+      margin: 20px;
+    }
+  
+    h1 {
+      font-size: 2rem;
+    }
+  
+    button {
+      font-size: 1.1rem;
+      padding: 12px 20px;
+    }
+  
+    .scanner-message {
+      font-size: 1.1rem;
+    }
+  
+    .scan-result,
+    .status-message {
+      font-size: 1rem;
+    }
+  
+    .history-btn,
+    .logout-btn {
+      width: 100%;
+      font-size: 1.1rem;
+    }
+  }
+  
