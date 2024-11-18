@@ -5,24 +5,20 @@
   .admin-button {
     position: absolute;
     top: -200px;
-    left: -580px;
+    left: -70px;
     background: none;
     border: none;
     cursor: pointer;
+    padding: 10px 10px;
   }
 
-  .admin-button:hover {
-    position: absolute;
-    top: -200px;
-    left: -580px;
-    background: none;
-    border: none;
-    cursor: pointer;
-  }
-  
   .admin-logo {
     width: 80px;
     height: 80px;
+  }
+
+  .auth-inner{
+    width: 350px;
   }
   
   /* Modal Style */
@@ -30,8 +26,8 @@
     position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
+    width: 950%;
+    height: 95%;
     background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
     display: flex;
     justify-content: center;
@@ -41,7 +37,7 @@
   
   .admin-modal-content {
     background-color: white;
-    padding: 20px;
+    padding: 10px;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     text-align: center;
@@ -74,11 +70,11 @@
   
   .admin-modal-content {
     background-color: #fff;
-    padding: 30px;
+    padding: 5px;
     border-radius: 10px;
+    border: 1px solid black;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     width: 400px;
-    max-width: 90%;
     text-align: center;
   }
   
