@@ -15,6 +15,21 @@ function Scan() {
   const [scanning, setScanning] = useState(false); // Control scanner state
   const navigate = useNavigate(); // Hook for navigation
 
+  // Verify admin access on component load
+  useEffect(() => {
+    const verifyAdminAccess = () => {
+      const isAdminVerified = localStorage.getItem("adminVerified");
+      if (!isAdminVerified) {
+        toast.error("Unauthorized access. Redirecting to login.", {
+          position: "top-center",
+        });
+        navigate("/login"); // Redirect to login page if not verified
+      }
+    };
+
+    verifyAdminAccess();
+  }, [navigate]);
+
   // Handle successful scan
   const handleScan = async (data) => {
     if (data) {
@@ -87,6 +102,7 @@ function Scan() {
   const handleLogout = async () => {
     try {
       await signOut(auth); // Sign the user out
+      localStorage.removeItem("adminVerified"); // Remove admin verification status
       alert("Logged out successfully!");
       navigate("/login"); // Navigate to the login page
     } catch (error) {

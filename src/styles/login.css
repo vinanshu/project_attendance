@@ -1,6 +1,14 @@
 .login-container {
     position: relative;
   }
+
+  .back{
+    background-image: url('../logo/background.jpg');
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: 100px 100px;
+  left: 50px;
+  }
   
   .admin-button {
     position: absolute;

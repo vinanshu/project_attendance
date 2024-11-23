@@ -17,16 +17,17 @@
   
   /* Table Styling */
   .table-container {
-    max-height: 500px;
-    overflow-y: auto;
+    max-height: 400px;
     margin-bottom: 30px;
     border: 1px solid #ddd;
     border-radius: 10px;
     background-color: #f9f9f9;
+    margin-left: -30px;
+    width: 100px;
   }
   
   table {
-    width: 100%;
+    width: 50%;
     border-collapse: collapse;
   }
   
@@ -72,6 +73,7 @@
   .delete-btn {
     background-color: #dc3545;
     color: #fff;
+    width: 100px;
   }
   
   .delete-btn:hover {
@@ -99,8 +101,10 @@
   /* Mobile Responsiveness */
   @media (max-width: 768px) {
     .history-container {
-      padding: 20px;
+      padding: 50px;
       margin: 20px;
+      width: 320px;
+      margin-left:-40px;
     }
   
     .history-title {
@@ -108,13 +112,19 @@
     }
   
     th, td {
-      font-size: 1rem;
+      font-size: .8rem;
       padding: 8px 12px;
+    }
+    
+    td{
+      font-size: 8px;
     }
   
     .button {
-      font-size: 1.1rem;
-      padding: 10px 20px;
+      margin-top: 1px;
+      font-size: 15px;
+      padding: 5px;
+      width: 150px;
     }
   }
   

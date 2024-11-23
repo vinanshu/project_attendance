@@ -48,8 +48,8 @@ function Login() {
   };
 
   const handleAdminSubmit = () => {
-    // Validate admin code and password
     if (adminCode === "admin" && adminPassword === "admin") {
+      localStorage.setItem("adminVerified", true); // Store admin verification
       toast.success("Admin Access Granted", {
         position: "top-center",
       });
@@ -61,73 +61,77 @@ function Login() {
     }
     setAdminModalVisible(false); // Hide modal after validation
   };
+  
 
   return (
-    <div className="login-container">
-      <form onSubmit={handleSubmit}>
-        <h3>Login</h3>
+    <div className="back">
+      <div className="login-container">
+        <form onSubmit={handleSubmit}>
+          <h3>Login</h3>
 
-        <div className="mb-3">
-          <label>Email address</label>
-          <input
-            type="email"
-            className="form-control"
-            placeholder="Enter email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-        </div>
-
-        <div className="mb-3">
-          <label>Password</label>
-          <input
-            type="password"
-            className="form-control"
-            placeholder="Enter password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </div>
-
-        <div className="d-grid">
-          <button type="submit" className="btn btn-primary" disabled={loading}>
-            {loading ? "Logging in..." : "Submit"}
-          </button>
-        </div>
-        <p className="forgot-password text-right">
-          New user <a href="/register">Register Here</a>
-        </p>
-      </form>
-
-      {/* Admin Button */}
-      <button className="admin-button" onClick={handleAdminClick}>
-        <img src={Logo} alt="Admin" className="admin-logo" />
-      </button>
-
-      {/* Admin Modal */}
-      {adminModalVisible && (
-        <div className="admin-modal">
-          <div className="admin-modal-content">
-            <h4>Enter Admin Code</h4>
+          <div className="mb-3">
+            <label>Email address</label>
             <input
-              type="text"
-              placeholder="Admin Code"
-              value={adminCode}
-              onChange={(e) => setAdminCode(e.target.value)}
+              type="email"
+              className="form-control"
+              placeholder="Enter email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
             />
+          </div>
+
+          <div className="mb-3">
+            <label>Password</label>
             <input
               type="password"
-              placeholder="Admin Password"
-              value={adminPassword}
-              onChange={(e) => setAdminPassword(e.target.value)}
+              className="form-control"
+              placeholder="Enter password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
             />
-            <div className="admin-modal-actions">
-              <button onClick={handleAdminSubmit}>Submit</button>
-              <button onClick={() => setAdminModalVisible(false)} className="cancel">Cancel</button>
+          </div>
+
+          <div className="d-grid">
+            <button type="submit" className="btn btn-primary" disabled={loading}>
+              {loading ? "Logging in..." : "Submit"}
+            </button>
+          </div>
+          <p className="forgot-password text-right">
+            New user <a href="/register">Register Here</a>
+          </p>
+        </form>
+
+        {/* Admin Button */}
+        <button className="admin-button" onClick={handleAdminClick}>
+          <img src={Logo} alt="Admin" className="admin-logo" />
+        </button>
+
+        {/* Admin Modal */}
+        {adminModalVisible && (
+          <div className="admin-modal">
+            <div className="admin-modal-content">
+              <h4>Enter Admin Code</h4>
+              <input
+                type="text"
+                placeholder="Admin Code"
+                value={adminCode}
+                onChange={(e) => setAdminCode(e.target.value)}
+              />
+              <input
+                type="password"
+                placeholder="Admin Password"
+                value={adminPassword}
+                onChange={(e) => setAdminPassword(e.target.value)}
+              />
+              <div className="admin-modal-actions">
+                <button onClick={handleAdminSubmit}>Submit</button>
+                <button onClick={() => setAdminModalVisible(false)} className="cancel">Cancel</button>
+              </div>
             </div>
           </div>
-        </div>
-      )}
+
+        )}
+      </div>
     </div>
   );
 }
