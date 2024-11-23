@@ -8,7 +8,7 @@ function Profile() {
   const [userDetails, setUserDetails] = useState(null);
   const [scanHistory, setScanHistory] = useState([]); // State to store scan history
   const [showHistory, setShowHistory] = useState(false); // State to toggle history display
-  const [showDownloadOptions, setShowDownloadOptions] = useState(false); // State for QR options
+  const [screenshotWarning, setScreenshotWarning] = useState(false); // State for warning
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -70,26 +70,33 @@ function Profile() {
     }
   };
 
-  // Handle QR Code click
-  const handleQRCodeClick = () => {
-    setShowDownloadOptions(true); // Show download/cancel options
-  };
+  // Detect screenshot attempt (using visibilitychange for browsers)
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        setScreenshotWarning(true); // Display the warning if the page is hidden (screenshot attempt)
+      } else {
+        setScreenshotWarning(false); // Hide the warning if the page becomes visible again
+      }
+    };
 
-  // Handle QR Code download
-  const downloadQRCode = () => {
-    if (userDetails?.qrCode) {
-      const link = document.createElement("a");
-      link.href = userDetails.qrCode;
-      link.download = "QRCode.png";
-      link.click();
-    }
-    setShowDownloadOptions(false); // Hide options after download
-  };
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+
+    return () => {
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+    };
+  }, []);
 
   return (
     <div className="profile-container">
       {userDetails ? (
         <>
+          {screenshotWarning && (
+            <div className="screenshot-warning">
+              <p>Warning: Taking screenshots may violate our policy.</p>
+            </div>
+          )}
+
           <h3 className="profile-header">Welcome {userDetails.firstName}</h3>
           <div className="profile-info">
             <p>Email: {userDetails.email}</p>
@@ -102,7 +109,6 @@ function Profile() {
                 <img
                   src={userDetails.qrCode}
                   alt="User QR Code"
-                  onClick={handleQRCodeClick}
                 />
               </div>
             )}
@@ -131,24 +137,6 @@ function Profile() {
               ) : (
                 <p className="no-history">No attendance available.</p>
               )}
-            </div>
-          )}
-
-          {/* QR Code download options */}
-          {showDownloadOptions && (
-            <div className="qr-code-modal">
-              <div className="modal-content">
-                <h5>Download QR Code?</h5>
-                <button className="btn btn-success" onClick={downloadQRCode}>
-                  Download
-                </button>
-                <button
-                  className="btn btn-danger cancel"
-                  onClick={() => setShowDownloadOptions(false)}
-                >
-                  Cancel
-                </button>
-              </div>
             </div>
           )}
         </>

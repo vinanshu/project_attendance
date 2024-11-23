@@ -1,0 +1,69 @@
+/* Ensure body allows scrolling */
+body, html {
+    height: 100%;
+    overflow-x: hidden;
+    margin: 0;
+  }
+  
+  /* Center the form container vertically on larger screens and allow scrolling */
+  .form-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background-color: #f4f4f9;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    width: 90%;
+    max-width: 800px;
+    max-height: 90vh; /* Prevent overflow beyond viewport */
+    overflow-y: auto; /* Allow scrolling if content overflows */
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .form-container {
+      width: 100%;
+      max-width: none;
+      padding: 15px;
+    }
+  
+    form {
+      padding: 10px;
+      margin-top: 20px;
+      max-height: 80vh; /* Restrict the form height to 80% of the viewport */
+      overflow-y: auto;
+    }
+  
+    video {
+      width: 100%;
+      max-width: 320px;
+      height: auto;
+      margin-top: 20px;
+      margin-bottom: 20px;
+      display: block; /* Display video feed */
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .form-container {
+      padding: 10px;
+      width: 100%;
+    }
+  
+    video {
+      width: 100%;
+      max-width: 280px;
+      height: auto;
+      margin-top: 15px;
+      margin-bottom: 15px;
+    }
+  
+    form {
+      max-height: 75vh; /* Restrict form height on smaller screens */
+      overflow-y: auto; /* Allow scrolling for form content */
+    }
+  }
+  
+  

@@ -1,22 +1,22 @@
-import React, { useState, useEffect, useRef } from "react"; // Add useRef import
-import { toast } from "react-toastify"; // For displaying toast notifications
-import "react-toastify/dist/ReactToastify.css"; // Styles for toast notifications
-import { db } from "../config/firebase"; // Import Firestore
-import { collection, addDoc, query, where, getDocs } from "firebase/firestore"; // Firestore methods
-import { useNavigate } from "react-router-dom"; // Import useNavigate for routing
-import { signOut } from "firebase/auth"; // Import Firebase signOut method
-import { auth } from "../config/firebase"; // Firebase authentication
-import Webcam from "react-webcam"; // For capturing images from the camera
-import jsQR from "jsqr"; // QR code decoding library
+import React, { useState, useEffect, useRef } from "react";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { db } from "../config/firebase";
+import { collection, addDoc, query, where, getDocs } from "firebase/firestore";
+import { useNavigate } from "react-router-dom";
+import { signOut } from "firebase/auth";
+import { auth } from "../config/firebase";
+import Webcam from "react-webcam";
+import jsQR from "jsqr";
 import "../styles/scan.css";
 
 function Scan() {
   const [scanResult, setScanResult] = useState(""); // Store scanned result
-  const [status, setStatus] = useState(""); // Store the action (IN/OUT)
-  const [scanning, setScanning] = useState(false); // Control scanner state
-  const [cameraFacing, setCameraFacing] = useState("environment"); // Camera facing mode
-  const webcamRef = useRef(null); // Define webcamRef using useRef hook
-  const navigate = useNavigate(); // Hook for navigation
+  const [status, setStatus] = useState(""); // Store IN/OUT status
+  const [scanning, setScanning] = useState(false); // Enable or disable scanning
+  const [cameraFacing, setCameraFacing] = useState("environment"); // Toggle camera facing
+  const webcamRef = useRef(null); // Reference for the webcam
+  const navigate = useNavigate(); // Navigation hook
 
   // Verify admin access on component load
   useEffect(() => {
@@ -26,127 +26,133 @@ function Scan() {
         toast.error("Unauthorized access. Redirecting to login.", {
           position: "top-center",
         });
-        navigate("/login"); // Redirect to login page if not verified
+        navigate("/login");
       }
     };
-
     verifyAdminAccess();
   }, [navigate]);
 
   // Handle successful scan
   const handleScan = async (data) => {
-    if (data) {
-      setScanResult(data); // Set the scanned result
+    try {
+      if (!data) {
+        toast.error("Invalid QR code data. Please try again.", {
+          position: "top-center",
+        });
+        return;
+      }
 
-      // Extract user info from the scanned QR code text
       const [fname, IDnumber] = data.split(" ");
+      if (!fname || !IDnumber) {
+        toast.error("QR code data is incomplete.", {
+          position: "top-center",
+        });
+        return;
+      }
 
-      // Check Firestore if the same ID number has already scanned for the same status (IN/OUT)
       const q = query(
         collection(db, "scanHistory"),
         where("idNumber", "==", IDnumber),
+        where("fname", "==", fname),
         where("status", "==", status)
       );
       const querySnapshot = await getDocs(q);
 
       if (!querySnapshot.empty) {
-        // If a record already exists with the same ID number and status, prevent further scanning
-        toast.error(`ID ${IDnumber} has already scanned as ${status}`, {
+        toast.error(`ID ${IDnumber} has already been marked as ${status}.`, {
           position: "top-center",
         });
-        return; // Prevent saving new scan
+        return;
       }
 
-      // Prepare the data to save in Firestore
       const scanData = {
         name: fname,
         idNumber: IDnumber,
-        status, // IN or OUT
+        status,
         timestamp: new Date().toLocaleString(),
       };
 
-      try {
-        // Save the scan data to Firestore
-        await addDoc(collection(db, "scanHistory"), scanData);
+      await addDoc(collection(db, "scanHistory"), scanData);
+      toast.success(`QR Code ${status} processed successfully!`, {
+        position: "top-center",
+      });
 
-        // Display success toast notification
-        setStatus(`${status} - Approved`);
-        setScanning(false); // Turn off scanning after processing
-        toast.success(`QR Code ${status} processed successfully!`, {
-          position: "top-center",
-        });
-      } catch (error) {
-        console.error("Error saving scan data: ", error);
-        toast.error("Failed to save scan data", { position: "top-center" });
-      }
+      setScanResult(data);
+      setScanning(false);
+    } catch (error) {
+      console.error("Error processing scan:", error);
+      toast.error("An error occurred while processing the scan.", {
+        position: "top-center",
+      });
     }
-  };
-
-  // Handle scan error
-  const handleError = (error) => {
-    console.error("Scanner Error:", error);
-    toast.error("An error occurred while scanning. Please try again.", {
-      position: "top-center",
-    });
   };
 
   // Handle IN/OUT button click
   const handleButtonClick = (action) => {
-    setStatus(action); // Set status to "IN" or "OUT"
-    setScanResult(""); // Clear previous scan result
-    setScanning(true); // Enable scanning
+    setStatus(action);
+    setScanResult("");
+    setScanning(true);
   };
 
-  // Handle camera toggle
+  // Capture image and scan QR code
+  const captureAndScan = () => {
+    if (!webcamRef.current) {
+      toast.error("Camera not available. Please try again.", {
+        position: "top-center",
+      });
+      return;
+    }
+
+    const imageSrc = webcamRef.current.getScreenshot();
+    if (!imageSrc) {
+      toast.error("Failed to capture image. Please try again.", {
+        position: "top-center",
+      });
+      return;
+    }
+
+    const image = new Image();
+    image.src = imageSrc;
+
+    image.onload = () => {
+      const canvas = document.createElement("canvas");
+      const ctx = canvas.getContext("2d");
+      canvas.width = image.width;
+      canvas.height = image.height;
+      ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
+      const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+      const code = jsQR(imageData.data, canvas.width, canvas.height);
+
+      if (code) {
+        handleScan(code.data);
+      } else {
+        toast.error("No QR code found. Please try again.", {
+          position: "top-center",
+        });
+      }
+    };
+  };
+
+  // Toggle camera facing mode
   const toggleCamera = () => {
-    setCameraFacing((prevFacing) =>
-      prevFacing === "environment" ? "user" : "environment"
-    );
+    setCameraFacing((prev) => (prev === "environment" ? "user" : "environment"));
   };
 
   // Handle navigation to history page
   const goToHistory = () => {
-    navigate("/history"); // Navigate to history.js page
+    navigate("/history");
   };
 
   // Handle logout
   const handleLogout = async () => {
     try {
-      await signOut(auth); // Sign the user out
-      localStorage.removeItem("adminVerified"); // Remove admin verification status
-      alert("Logged out successfully!");
-      navigate("/login"); // Navigate to the login page
+      await signOut(auth);
+      localStorage.removeItem("adminVerified");
+      toast.success("Logged out successfully.", { position: "top-center" });
+      navigate("/login");
     } catch (error) {
-      console.error("Error logging out: ", error);
-      alert("Failed to log out");
-    }
-  };
-
-  // Capture image and scan QR code
-  const captureAndScan = () => {
-    if (webcamRef.current) {
-      const imageSrc = webcamRef.current.getScreenshot(); // Capture the image
-      const image = new Image();
-      image.src = imageSrc;
-
-      image.onload = () => {
-        // Scan QR code from the captured image
-        const canvas = document.createElement("canvas");
-        const ctx = canvas.getContext("2d");
-        canvas.height = image.height;
-        canvas.width = image.width;
-        ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
-        const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-        const code = jsQR(imageData.data, canvas.width, canvas.height);
-
-        if (code) {
-          handleScan(code.data); // If QR code found, process it
-        } else {
-          toast.error("No QR code found. Please try again.", {
-            position: "top-center",
-          });
-        }
-      };
+      console.error("Error logging out:", error);
+      toast.error("Failed to log out. Please try again.", { position: "top-center" });
     }
   };
 
@@ -169,24 +175,22 @@ function Scan() {
         {scanning && (
           <Webcam
             audio={false}
-            ref={webcamRef} // Properly pass webcamRef here
+            ref={webcamRef}
             screenshotFormat="image/jpeg"
             width="100%"
-            videoConstraints={{
-              facingMode: cameraFacing,
-            }}
+            videoConstraints={{ facingMode: cameraFacing }}
           />
         )}
         {!scanning && (
           <p className="scanner-message">
-            Scanner is off. Please click "IN" or "OUT" to start scanning.
+            Scanner is off. Click "IN" or "OUT" to start scanning.
           </p>
         )}
       </div>
 
       {/* Capture Image Button */}
       <div className="capture-button">
-        <button onClick={captureAndScan}>Capture & Scan QR Code</button>
+        <button onClick={captureAndScan} className="scan">Scan</button>
       </div>
 
       {/* Toggle Camera Button */}
@@ -200,14 +204,14 @@ function Scan() {
       {scanResult && <p className="scan-result">Scanned QR Code: {scanResult}</p>}
       {status && <p className="status-message">Status: {status}</p>}
 
-      {/* Button to navigate to History page */}
+      {/* Navigate to History */}
       <div>
         <button className="history-btn" onClick={goToHistory}>
-          Go to History
+          View Scan History
         </button>
       </div>
 
-      {/* Logout Button */}
+      {/* Logout */}
       <div>
         <button className="logout-btn" onClick={handleLogout}>
           Logout

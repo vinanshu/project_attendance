@@ -4,6 +4,7 @@ import { auth, db } from "../config/firebase";
 import { setDoc, doc, getDocs, collection, query, where } from "firebase/firestore";
 import { toast } from "react-toastify";
 import QRCode from "qrcode";  // Import the qrcode library
+import "../styles/register.css";
 
 function Register() {
   const [email, setEmail] = useState("");

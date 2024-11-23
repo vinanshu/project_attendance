@@ -2,18 +2,11 @@
     position: relative;
   }
 
-  .back{
-    background-image: url('../logo/background.jpg');
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  background-size: 100px 100px;
-  left: 50px;
-  }
   
   .admin-button {
     position: absolute;
     top: -200px;
-    left: -70px;
+    left: 200px;
     background: none;
     border: none;
     cursor: pointer;
@@ -157,4 +150,18 @@
       padding: 8px 16px;
     }
   }
+
+  .screenshot-warning {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(255, 0, 0, 0.8);
+    color: white;
+    text-align: center;
+    padding: 10px;
+    font-size: 16px;
+    z-index: 9999;
+  }
+  
   
