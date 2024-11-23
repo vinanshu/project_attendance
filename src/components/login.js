@@ -1,6 +1,7 @@
 import { signInWithEmailAndPassword } from "firebase/auth";
 import React, { useState } from "react";
-import { auth } from "../config/firebase";
+import { auth, db } from "../config/firebase"; // Import Firestore and Auth
+import { doc, getDoc } from "firebase/firestore"; // Firestore methods
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import "../styles/login.css";
@@ -47,21 +48,39 @@ function Login() {
     setAdminModalVisible(true); // Show admin modal on button click
   };
 
-  const handleAdminSubmit = () => {
-    if (adminCode === "admin" && adminPassword === "admin") {
-      localStorage.setItem("adminVerified", true); // Store admin verification
-      toast.success("Admin Access Granted", {
-        position: "top-center",
-      });
-      navigate("/scan"); // Redirect to scan.js on success
-    } else {
-      toast.error("Invalid Admin Code or Password", {
+  const handleAdminSubmit = async () => {
+    try {
+      // Fetch admin credentials from Firestore
+      const docRef = doc(db, "adminCredentials", "adminAccess"); // Replace with your document ID
+      const docSnap = await getDoc(docRef);
+
+      if (docSnap.exists()) {
+        const { code, password } = docSnap.data(); // Destructure Firestore data
+        if (adminCode === code && adminPassword === password) {
+          localStorage.setItem("adminVerified", true); // Store admin verification
+          toast.success("Admin Access Granted", {
+            position: "top-center",
+          });
+          navigate("/scan"); // Redirect to scan.js on success
+        } else {
+          toast.error("Invalid Admin Code or Password", {
+            position: "bottom-center",
+          });
+        }
+      } else {
+        toast.error("Admin credentials not found", {
+          position: "bottom-center",
+        });
+      }
+    } catch (error) {
+      console.error("Error fetching admin credentials: ", error);
+      toast.error("Failed to verify admin credentials. Please try again.", {
         position: "bottom-center",
       });
+    } finally {
+      setAdminModalVisible(false); // Hide modal after validation
     }
-    setAdminModalVisible(false); // Hide modal after validation
   };
-  
 
   return (
     <div className="back">
@@ -125,11 +144,15 @@ function Login() {
               />
               <div className="admin-modal-actions">
                 <button onClick={handleAdminSubmit}>Submit</button>
-                <button onClick={() => setAdminModalVisible(false)} className="cancel">Cancel</button>
+                <button
+                  onClick={() => setAdminModalVisible(false)}
+                  className="cancel"
+                >
+                  Cancel
+                </button>
               </div>
             </div>
           </div>
-
         )}
       </div>
     </div>
