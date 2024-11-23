@@ -50,37 +50,42 @@ function Login() {
 
   const handleAdminSubmit = async () => {
     try {
-      // Fetch admin credentials from Firestore
-      const docRef = doc(db, "adminCredentials", "adminAccess"); // Replace with your document ID
+      // Reference the admin credentials document in Firestore
+      const docRef = doc(db, "adminCredentials", "adminAccess"); // Use the correct collection and document ID
       const docSnap = await getDoc(docRef);
-
+  
       if (docSnap.exists()) {
-        const { code, password } = docSnap.data(); // Destructure Firestore data
+        const { code, password } = docSnap.data(); // Retrieve code and password from Firestore
+  
+        // Validate admin code and password
         if (adminCode === code && adminPassword === password) {
-          localStorage.setItem("adminVerified", true); // Store admin verification
+          localStorage.setItem("adminVerified", true); // Store verification in localStorage
           toast.success("Admin Access Granted", {
             position: "top-center",
           });
-          navigate("/scan"); // Redirect to scan.js on success
+          navigate("/scan"); // Redirect to the scan page on success
         } else {
+          // Display error if credentials do not match
           toast.error("Invalid Admin Code or Password", {
             position: "bottom-center",
           });
         }
       } else {
-        toast.error("Admin credentials not found", {
+        // Handle the case where the document does not exist
+        toast.error("Admin credentials not found. Please contact support.", {
           position: "bottom-center",
         });
       }
     } catch (error) {
       console.error("Error fetching admin credentials: ", error);
-      toast.error("Failed to verify admin credentials. Please try again.", {
+      toast.error("An error occurred while verifying admin credentials.", {
         position: "bottom-center",
       });
     } finally {
-      setAdminModalVisible(false); // Hide modal after validation
+      setAdminModalVisible(false); // Hide modal after validation attempt
     }
   };
+  
 
   return (
     <div className="back">
