@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react"; // Add useRef import
 import { toast } from "react-toastify"; // For displaying toast notifications
 import "react-toastify/dist/ReactToastify.css"; // Styles for toast notifications
 import { db } from "../config/firebase"; // Import Firestore
@@ -6,16 +6,16 @@ import { collection, addDoc, query, where, getDocs } from "firebase/firestore"; 
 import { useNavigate } from "react-router-dom"; // Import useNavigate for routing
 import { signOut } from "firebase/auth"; // Import Firebase signOut method
 import { auth } from "../config/firebase"; // Firebase authentication
+import Webcam from "react-webcam"; // For capturing images from the camera
+import jsQR from "jsqr"; // QR code decoding library
 import "../styles/scan.css";
-
-// Importing react-qr-scanner
-import QrScanner from "react-qr-scanner";
 
 function Scan() {
   const [scanResult, setScanResult] = useState(""); // Store scanned result
   const [status, setStatus] = useState(""); // Store the action (IN/OUT)
   const [scanning, setScanning] = useState(false); // Control scanner state
   const [cameraFacing, setCameraFacing] = useState("environment"); // Camera facing mode
+  const webcamRef = useRef(null); // Define webcamRef using useRef hook
   const navigate = useNavigate(); // Hook for navigation
 
   // Verify admin access on component load
@@ -36,10 +36,10 @@ function Scan() {
   // Handle successful scan
   const handleScan = async (data) => {
     if (data) {
-      setScanResult(data.text); // Set the scanned result
+      setScanResult(data); // Set the scanned result
 
       // Extract user info from the scanned QR code text
-      const [fname, IDnumber] = data.text.split(" ");
+      const [fname, IDnumber] = data.split(" ");
 
       // Check Firestore if the same ID number has already scanned for the same status (IN/OUT)
       const q = query(
@@ -122,6 +122,34 @@ function Scan() {
     }
   };
 
+  // Capture image and scan QR code
+  const captureAndScan = () => {
+    if (webcamRef.current) {
+      const imageSrc = webcamRef.current.getScreenshot(); // Capture the image
+      const image = new Image();
+      image.src = imageSrc;
+
+      image.onload = () => {
+        // Scan QR code from the captured image
+        const canvas = document.createElement("canvas");
+        const ctx = canvas.getContext("2d");
+        canvas.height = image.height;
+        canvas.width = image.width;
+        ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
+        const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+        const code = jsQR(imageData.data, canvas.width, canvas.height);
+
+        if (code) {
+          handleScan(code.data); // If QR code found, process it
+        } else {
+          toast.error("No QR code found. Please try again.", {
+            position: "top-center",
+          });
+        }
+      };
+    }
+  };
+
   return (
     <div className="scan-container">
       <h1 className="scan-title">QR Code Scanner</h1>
@@ -136,15 +164,17 @@ function Scan() {
         </button>
       </div>
 
-      {/* QR code scanner */}
+      {/* Webcam for capturing image */}
       <div className="scanner-container">
         {scanning && (
-          <QrScanner
-            delay={300}
-            facingMode={cameraFacing}
-            onScan={handleScan}
-            onError={handleError}
-            style={{ width: "100%" }}
+          <Webcam
+            audio={false}
+            ref={webcamRef} // Properly pass webcamRef here
+            screenshotFormat="image/jpeg"
+            width="100%"
+            videoConstraints={{
+              facingMode: cameraFacing,
+            }}
           />
         )}
         {!scanning && (
@@ -152,6 +182,11 @@ function Scan() {
             Scanner is off. Please click "IN" or "OUT" to start scanning.
           </p>
         )}
+      </div>
+
+      {/* Capture Image Button */}
+      <div className="capture-button">
+        <button onClick={captureAndScan}>Capture & Scan QR Code</button>
       </div>
 
       {/* Toggle Camera Button */}
