@@ -94,6 +94,22 @@
     background-color: #007bff;
     transition: background-color 0.3s ease, transform 0.3s ease;
   }
+
+  .toggle-camera button {
+    margin: 10px auto;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  
+  .toggle-camera button:hover {
+    background-color: #0056b3;
+  }
+  
   
   .history-btn:hover,
   .logout-btn:hover {

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import QRScanner from "react-qr-scanner"; // QR scanner component
 import { toast } from "react-toastify"; // For displaying toast notifications
 import "react-toastify/dist/ReactToastify.css"; // Styles for toast notifications
-import { db } from '../config/firebase'; // Import Firestore
+import { db } from "../config/firebase"; // Import Firestore
 import { collection, addDoc, query, where, getDocs } from "firebase/firestore"; // Firestore methods
 import { useNavigate } from "react-router-dom"; // Import useNavigate for routing
 import { signOut } from "firebase/auth"; // Import Firebase signOut method
@@ -13,6 +13,8 @@ function Scan() {
   const [scanResult, setScanResult] = useState(""); // Store scanned result
   const [status, setStatus] = useState(""); // Store the action (IN/OUT)
   const [scanning, setScanning] = useState(false); // Control scanner state
+  const [cameraFacing, setCameraFacing] = useState("environment"); // Camera facing mode
+  const [scannerError, setScannerError] = useState(null); // Store scanner errors
   const navigate = useNavigate(); // Hook for navigation
 
   // Verify admin access on component load
@@ -48,7 +50,9 @@ function Scan() {
 
       if (!querySnapshot.empty) {
         // If a record already exists with the same ID number and status, prevent further scanning
-        toast.error(`ID ${IDnumber} has already scanned as ${status}`, { position: "top-center" });
+        toast.error(`ID ${IDnumber} has already scanned as ${status}`, {
+          position: "top-center",
+        });
         return; // Prevent saving new scan
       }
 
@@ -67,7 +71,9 @@ function Scan() {
         // Display success toast notification
         setStatus(`${status} - Approved`);
         setScanning(false); // Turn off scanning after processing
-        toast.success(`QR Code ${status} processed successfully!`, { position: "top-center" });
+        toast.success(`QR Code ${status} processed successfully!`, {
+          position: "top-center",
+        });
       } catch (error) {
         console.error("Error saving scan data: ", error);
         toast.error("Failed to save scan data", { position: "top-center" });
@@ -77,7 +83,11 @@ function Scan() {
 
   // Handle scan error
   const handleError = (error) => {
-    console.error(error);
+    console.error("QRScanner Error:", error);
+    setScannerError(error?.message || "Camera access failed. Please check your permissions.");
+    toast.error("Camera error detected. Check console for details.", {
+      position: "top-center",
+    });
   };
 
   // Handle IN/OUT button click
@@ -85,6 +95,7 @@ function Scan() {
     setStatus(action); // Set status to "IN" or "OUT"
     setScanResult(""); // Clear previous scan result
     setScanning(true); // Enable scanning
+    setScannerError(null); // Reset scanner error
   };
 
   useEffect(() => {
@@ -92,6 +103,13 @@ function Scan() {
       toast.success(`QR Code ${status}`, { position: "top-center" });
     }
   }, [status]);
+
+  // Handle camera toggle
+  const toggleCamera = () => {
+    setCameraFacing((prevFacing) =>
+      prevFacing === "environment" ? "user" : "environment"
+    );
+  };
 
   // Handle navigation to history page
   const goToHistory = () => {
@@ -117,21 +135,42 @@ function Scan() {
 
       {/* Buttons for IN and OUT actions */}
       <div className="action-buttons">
-        <button className="in-btn" onClick={() => handleButtonClick("IN")}>IN</button>
-        <button className="out-btn" onClick={() => handleButtonClick("OUT")}>OUT</button>
+        <button className="in-btn" onClick={() => handleButtonClick("IN")}>
+          IN
+        </button>
+        <button className="out-btn" onClick={() => handleButtonClick("OUT")}>
+          OUT
+        </button>
       </div>
 
       {/* QR code scanner */}
       <div className="scanner-container">
-        {scanning && (
+        {scanning && !scannerError && (
           <QRScanner
             delay={300}
             style={{ width: "100%" }}
+            constraints={{
+              video: { facingMode: { exact: cameraFacing } }, // Explicit facingMode
+            }}
             onScan={handleScan}
             onError={handleError}
           />
         )}
-        {!scanning && <p className="scanner-message">Scanner is off. Please click "IN" or "OUT" to start scanning.</p>}
+        {!scanning && (
+          <p className="scanner-message">
+            Scanner is off. Please click "IN" or "OUT" to start scanning.
+          </p>
+        )}
+        {scannerError && (
+          <p className="scanner-error">{scannerError}</p>
+        )}
+      </div>
+
+      {/* Toggle Camera Button */}
+      <div className="toggle-camera">
+        <button onClick={toggleCamera}>
+          {cameraFacing === "environment" ? "Switch to Front Camera" : "Switch to Back Camera"}
+        </button>
       </div>
 
       {/* Display scanned result and status */}
@@ -140,12 +179,16 @@ function Scan() {
 
       {/* Button to navigate to History page */}
       <div>
-        <button className="history-btn" onClick={goToHistory}>Go to History</button>
+        <button className="history-btn" onClick={goToHistory}>
+          Go to History
+        </button>
       </div>
 
       {/* Logout Button */}
       <div>
-        <button className="logout-btn" onClick={handleLogout}>Logout</button>
+        <button className="logout-btn" onClick={handleLogout}>
+          Logout
+        </button>
       </div>
     </div>
   );
