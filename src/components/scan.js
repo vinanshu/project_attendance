@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import QRScanner from "react-qr-scanner"; // QR scanner component
 import { toast } from "react-toastify"; // For displaying toast notifications
 import "react-toastify/dist/ReactToastify.css"; // Styles for toast notifications
 import { db } from "../config/firebase"; // Import Firestore
@@ -9,12 +8,14 @@ import { signOut } from "firebase/auth"; // Import Firebase signOut method
 import { auth } from "../config/firebase"; // Firebase authentication
 import "../styles/scan.css";
 
+// Importing react-qr-scanner
+import QrScanner from "react-qr-scanner";
+
 function Scan() {
   const [scanResult, setScanResult] = useState(""); // Store scanned result
   const [status, setStatus] = useState(""); // Store the action (IN/OUT)
   const [scanning, setScanning] = useState(false); // Control scanner state
   const [cameraFacing, setCameraFacing] = useState("environment"); // Camera facing mode
-  const [scannerError, setScannerError] = useState(null); // Store scanner errors
   const navigate = useNavigate(); // Hook for navigation
 
   // Verify admin access on component load
@@ -83,9 +84,8 @@ function Scan() {
 
   // Handle scan error
   const handleError = (error) => {
-    console.error("QRScanner Error:", error);
-    setScannerError(error?.message || "Camera access failed. Please check your permissions.");
-    toast.error("Camera error detected. Check console for details.", {
+    console.error("Scanner Error:", error);
+    toast.error("An error occurred while scanning. Please try again.", {
       position: "top-center",
     });
   };
@@ -95,14 +95,7 @@ function Scan() {
     setStatus(action); // Set status to "IN" or "OUT"
     setScanResult(""); // Clear previous scan result
     setScanning(true); // Enable scanning
-    setScannerError(null); // Reset scanner error
   };
-
-  useEffect(() => {
-    if (status === "IN" || status === "OUT") {
-      toast.success(`QR Code ${status}`, { position: "top-center" });
-    }
-  }, [status]);
 
   // Handle camera toggle
   const toggleCamera = () => {
@@ -145,24 +138,19 @@ function Scan() {
 
       {/* QR code scanner */}
       <div className="scanner-container">
-        {scanning && !scannerError && (
-          <QRScanner
+        {scanning && (
+          <QrScanner
             delay={300}
-            style={{ width: "100%" }}
-            constraints={{
-              video: { facingMode: { exact: cameraFacing } }, // Explicit facingMode
-            }}
+            facingMode={cameraFacing}
             onScan={handleScan}
             onError={handleError}
+            style={{ width: "100%" }}
           />
         )}
         {!scanning && (
           <p className="scanner-message">
             Scanner is off. Please click "IN" or "OUT" to start scanning.
           </p>
-        )}
-        {scannerError && (
-          <p className="scanner-error">{scannerError}</p>
         )}
       </div>
 
