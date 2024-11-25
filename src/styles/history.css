@@ -1,10 +1,13 @@
 /* Container styling */
 .history-container {
-    padding: 30px;
+    padding: 10px;
     background-color: #ffffff;
     border-radius: 15px;
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
     font-family: 'Arial', sans-serif;
+    width: 700px;
+    margin-left: -200px;
+  height: 910px;
   }
   
   /* Title Styling */
@@ -24,6 +27,7 @@
     background-color: #f9f9f9;
     margin-left: -30px;
     width: 100px;
+    height: 1000px;
   }
   
   table {
@@ -73,7 +77,7 @@
   .delete-btn {
     background-color: #dc3545;
     color: #fff;
-    width: 100px;
+    width: 200px;
   }
   
   .delete-btn:hover {
@@ -97,38 +101,6 @@
   .logout-btn:hover {
     background-color: #d32f2f;
   }
-  
-  /* Mobile Responsiveness */
-  @media (max-width: 768px) {
-    .history-container {
-      padding: 50px;
-      margin: 20px;
-      width: 320px;
-      margin-left:1px;
-    }
-  
-    .history-title {
-      font-size: 2rem;
-    }
-  
-    th, td {
-      font-size: 11px;
-      padding: 12px 18px;
-      margin-right: 10px;
-    }
-    
-    td{
-      font-size: 11px;
-    }
-  
-    .button {
-      margin-top: 1px;
-      font-size: 15px;
-      padding: 5px;
-      width: 170px;
-    }
-  }
-
   /* Table Container for Scroll */
 .table-container {
   max-height: 400px; /* Set maximum height for the table container */
@@ -138,9 +110,8 @@
   border: 1px solid #ddd;
   border-radius: 10px;
   background-color: #f9f9f9;
-  padding: 10px;
-  width: 300px;
-  margin-left: -40px;
+  width: 600px;
+  margin-left: 30px;
 }
 
 /* Table Styling */
@@ -172,4 +143,73 @@ tbody tr:nth-child(odd) {
   background-color: #fff;
 }
 
+  /* Mobile Responsiveness */
+  @media (max-width: 768px) {
+    .history-container {
+      padding: 50px;
+      margin: 20px;
+      width: 320px;
+      margin-left:-1px;
+    }
+  
+    .history-title {
+      font-size: 2rem;
+    }
+  
+    th, td {
+      font-size: 11px;
+      padding: 12px 18px;
+      margin-right: 10px;
+    }
+    
+    td{
+      font-size: 11px;
+    }
+  
+    .button {
+      margin-top: 1px;
+      font-size: 15px;
+      padding: 5px;
+      width: 170px;
+    }
+
+    .delete-btn{
+      margin-top: 1px;
+      font-size: 15px;
+      padding: 5px;
+      width: 170px;
+      margin-left: 15px;
+    }
+
+    .go-to-scan-btn{
+      margin-top: 1px;
+      font-size: 15px;
+      padding: 5px;
+      width: 170px;
+      margin-left: 15px;
+    }
+
+    .logout-btn{
+      margin-top: 1px;
+      font-size: 15px;
+      padding: 5px;
+      width: 170px;
+      margin-left: 30px;
+    }
+
+    .table-container {
+      max-height: 400px;
+      margin-bottom: 30px;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      background-color: #f9f9f9;
+      margin-left: -100px;
+      width: 300px;
+      height: 1000px;
+      margin-left: -40px;
+    }
+   
+  }
+
+  
   

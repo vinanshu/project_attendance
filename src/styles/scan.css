@@ -29,13 +29,14 @@
     max-width: 900px;
     margin: 50px auto;
     padding: 40px;
-    width: 300px;
-    height: 80vh; /* Adjust height as needed */
+    width: 500px;
+    height: 910px; /* Adjust height as needed */
     overflow-y: auto; /* Enable vertical scrolling */
     background-color: #ffffff;
     border-radius: 15px;
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
     font-family: 'Arial', sans-serif;
+    margin-left: -90px;
   }
   
   
@@ -45,10 +46,15 @@
     margin: 15px;
     cursor: pointer;
     border-radius: 8px;
+    margin-left: 50px;
     border: none;
-    transition: background-color 0.3s ease, transform 0.3s ease;
-    color: white;
+    background-color: red;
     display: inline-block;
+  }
+
+  .capture-button{
+    border-radius: 100px;
+    margin-left: 100px;
   }
   
   button:hover {
@@ -104,6 +110,7 @@
     cursor: pointer;
     border-radius: 8px;
     border: none;
+    margin-left: 80px;
     color: white;
     background-color: #007bff;
     transition: background-color 0.3s ease, transform 0.3s ease;
@@ -118,7 +125,7 @@
     border-radius: 5px;
     cursor: pointer;
     font-size: 16px;
-    margin-left: 20px;
+    margin-left: 100px;
   }
   
   .toggle-camera button:hover {
@@ -169,10 +176,30 @@
       font-size: 1rem;
     }
   
-    .history-btn,
-    .logout-btn {
+    .history-btn {
       width: 100%;
       font-size: 1.1rem;
+      margin-left: 3px;
+    }
+
+    .logout-btn{
+      margin-left: 50px;
+    }
+    .capture-button{
+      border-radius: 100px;
+      margin-left: 10px;
+    }
+
+    .toggle-camera button {
+      margin: 10px auto;
+      padding: 10px 20px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      margin-left: 20px;
     }
   }
 
