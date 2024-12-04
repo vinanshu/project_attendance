@@ -1,5 +1,9 @@
 .App {
   text-align: center;
+  background-image: url(../logo/A.png);
+  background-repeat: no-repeat;
+  background-size: 300px 300px;
+  background-position-x: 10px ;
 }
 
 .App-logo {
@@ -60,6 +64,14 @@
 @media (max-width: 480px) {
   .App-logo {
     height: 30vmin;  /* Adjust logo size for very small screens */
+  }
+
+  .App{
+    background-image: url(../logo/A.png);
+  background-repeat: no-repeat;
+  background-size: 100px 100px;
+  background-position-x: 10px ;
+  background-position-y: 100px;
   }
 
   .App-header {

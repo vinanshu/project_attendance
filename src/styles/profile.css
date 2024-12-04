@@ -18,12 +18,13 @@
   .profile-info p {
     font-size: 1rem;
     margin: 10px 0;
-    color: #555;
+    color: black;
   }
   
   .profile-info h5 {
     font-size: 1.2rem;
     margin-bottom: 15px;
+    color: red ;
   }
   
   .qr-code-container {
@@ -35,7 +36,9 @@
     max-width: 200px;
     cursor: pointer;
     border-radius: 10px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    box-shadow: 10px 10px 10px rgba(236, 19, 182, 0.753);
+    border: 1px solid;
+    border-color: red green yellow;
   }
   
   .button-container {
@@ -55,12 +58,20 @@
   .button-container button:hover {
     background-color: #007bff;
     color: white;
+    background-color: green;
   }
+
+  .btn-secondary{
+    background-color: red;
+  } 
+
   
   .attendance-history {
     margin-top: 30px;
     background-color: #fff;
     padding: 15px;
+    height: 200px; /* Adjust height as needed */
+    overflow-y: auto; /* Enable vertical scrolling */
     border-radius: 10px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   }

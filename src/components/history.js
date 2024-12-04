@@ -106,15 +106,19 @@ function History() {
           <table>
             <thead>
               <tr>
-                <th>ID Number</th>
+                <th>first name</th>
+                <th>Middle Name</th>
+                <th>last Name & ID & Course</th>
                 <th>IN Timestamp</th>
                 <th>OUT Timestamp</th>
               </tr>
             </thead>
             <tbody>
               {history.map((scan) => (
-                <tr key={scan.id}>
+                <tr key={scan.name}>
+                  <td>{scan.name}</td>
                   <td>{scan.idNumber}</td>
+                  <td>{scan.lname}</td>
                   <td>{scan.status === "IN" ? scan.timestamp : "-"}</td>
                   <td>{scan.status === "OUT" ? scan.timestamp : "-"}</td>
                 </tr>

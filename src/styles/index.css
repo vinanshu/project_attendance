@@ -43,6 +43,8 @@ html,
   justify-content: center;
   flex-direction: column;
   text-align: left;
+  background-size: 300px 300px;
+  background-repeat: no-repeat;
   padding: 15px; /* Add padding for small screens */
 }
 
@@ -51,10 +53,12 @@ html,
   max-width: 450px; /* Max width for larger screens */
   margin: auto;
   background: #ffffff;
-  box-shadow: 0px 14px 80px rgba(34, 35, 58, 0.2);
+  box-shadow: 0px 14px 80px rgba(0, 0, 255, 0.829) ;
   padding: 20px; /* Reduced padding for mobile */
   border-radius: 15px;
   transition: all 0.3s;
+  border: solid 1px;
+  border-color: green red blue;
 }
 
 .auth-wrapper .form-control:focus {
@@ -66,6 +70,7 @@ html,
   text-align: center;
   margin: 0;
   line-height: 1;
+  color: blue;
   padding-bottom: 10px; /* Reduced padding for better mobile layout */
 }
 
@@ -103,6 +108,7 @@ html,
 
   .auth-wrapper {
     padding: 10px;
+    
   }
 
   h3 {
@@ -124,11 +130,15 @@ html,
 @media (max-width: 480px) {
   .auth-inner {
     width: 90%;  /* Form width for smaller screens */
-    padding: 15px; /* Reduced padding for tighter spaces */
+    padding: 15px;
   }
 
   .auth-wrapper {
     padding: 10px;
+    background-size: 100px 100px;
+  background-repeat: no-repeat;
+  padding: 15px;
+  background-position-y: 100px;
   }
 
   .auth-wrapper h3 {

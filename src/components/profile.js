@@ -99,10 +99,13 @@ function Profile() {
 
           <h3 className="profile-header">Welcome {userDetails.firstName}</h3>
           <div className="profile-info">
-            <p>Email: {userDetails.email}</p>
-            <p>First Name: {userDetails.firstName}</p>
-            <p>Last Name: {userDetails.lastName}</p>
-            <p>ID number: {userDetails.ID}</p>
+            <p><strong>Email: </strong>{userDetails.email}</p>
+            <p><strong>First Name: </strong> {userDetails.firstName}</p>
+            <p><strong>Last Name:  </strong>{userDetails.lastName}</p>
+            <p><strong>ID number: </strong> {userDetails.ID}</p>
+            <p><strong>Year: </strong> {userDetails.year}</p>
+            <p><strong>Course: </strong> {userDetails.course}</p>
+            <p><strong>Section: </strong> {userDetails.section}</p>
             {userDetails.qrCode && (
               <div className="qr-code-container">
                 <h5>Your QR Code:</h5>
