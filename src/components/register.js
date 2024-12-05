@@ -151,9 +151,9 @@ function Register() {
           required
         >
           <option value="">Select Course</option>
-          <option value="BSIT">IT</option>
-          <option value="BSTCM">TCM</option>
-          <option value="BSEMT">EMT</option>
+          <option value="BSIT">BSIT</option>
+          <option value="BSTCM">BSTTCM</option>
+          <option value="BSEMT">BSEMT</option>
         </select>
       </div>
       {/* Year and section selection */}
@@ -182,13 +182,13 @@ function Register() {
           required
         >
           <option value="">Select Section</option>
-          <option value="A">A</option>
-          <option value="B">B</option>
-          <option value="C">C</option>
-          <option value="D">D</option>
-          <option value="E">E</option>
-          <option value="F">F</option>
-          <option value="G">G</option>
+          <option value="A">section A</option>
+          <option value="B">section B</option>
+          <option value="C">section C</option>
+          <option value="D">section D</option>
+          <option value="E">section E</option>
+          <option value="F">section F</option>
+          <option value="G">section G</option>
         </select>
       </div>
       

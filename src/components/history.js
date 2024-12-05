@@ -40,11 +40,11 @@ function History() {
     const fetchHistory = async () => {
       try {
         const querySnapshot = await getDocs(collection(db, "scanHistory"));
-        const scans = querySnapshot.docs.map((doc) => ({
+        const scan = querySnapshot.docs.map((doc) => ({
           id: doc.id, // Firestore document ID
           ...doc.data(),
         }));
-        setHistory(scans); // Set the fetched history to state
+        setHistory(scan); // Set the fetched history to state
       } catch (error) {
         handleError("Failed to fetch scan history. Please try again later.", error);
       }
@@ -106,18 +106,16 @@ function History() {
           <table>
             <thead>
               <tr>
-                <th>first name</th>
-                <th>Middle Name</th>
-                <th>last Name & ID & Course</th>
+                <th>ID number</th>
                 <th>IN Timestamp</th>
                 <th>OUT Timestamp</th>
               </tr>
             </thead>
             <tbody>
               {history.map((scan) => (
-                <tr key={scan.name}>
-                  <td>{scan.name}</td>
+                <tr key={scan.ID}>
                   <td>{scan.idNumber}</td>
+                  <td>{scan.fname}</td>
                   <td>{scan.lname}</td>
                   <td>{scan.status === "IN" ? scan.timestamp : "-"}</td>
                   <td>{scan.status === "OUT" ? scan.timestamp : "-"}</td>

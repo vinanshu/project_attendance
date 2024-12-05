@@ -42,8 +42,8 @@ function Scan() {
         return;
       }
 
-      const [fname, IDnumber, lname] = data.split(" ");
-      if (!fname || !IDnumber || !lname ) {
+      const [idNumber,fname,lname] = data.split(" ");
+      if ( !idNumber || !fname ||!lname) {
         toast.error("QR code data is incomplete.", {
           position: "top-center",
         });
@@ -52,24 +52,24 @@ function Scan() {
 
       const q = query(
         collection(db, "scanHistory"),
-        where("idNumber", "==", IDnumber),
-        where("fname", "==", fname),
-        where("lname", "==", lname),
+        where("idNumber", "==", idNumber),
+        where("firstName", "==", fname),
+        where("lastName", "==", lname),
         where("status", "==", status)
       );
       const querySnapshot = await getDocs(q);
 
       if (!querySnapshot.empty) {
-        toast.error(`ID ${IDnumber} has already been marked as ${status}.`, {
+        toast.error(`ID ${idNumber} has already been marked as ${status}.`, {
           position: "top-center",
         });
         return;
       }
 
       const scanData = {
-        name: fname,
-        idNumber: IDnumber,
-        lname: lname,
+        idNumber: idNumber,
+        firstName: fname,
+        lastName: lname,
         status,
         timestamp: new Date().toLocaleString(),
       };
@@ -160,7 +160,7 @@ function Scan() {
 
   return (
     <div className="scan-container">
-      <h1 className="scan-title">Scan your ID QR code</h1>
+      <h1 className="scan-title">QR Code Scanner</h1>
 
       {/* Buttons for IN and OUT actions */}
       <div className="action-buttons">
