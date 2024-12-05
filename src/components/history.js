@@ -114,9 +114,7 @@ function History() {
             <tbody>
               {history.map((scan) => (
                 <tr key={scan.ID}>
-                  <td>{scan.idNumber}</td>
-                  <td>{scan.fname}</td>
-                  <td>{scan.lname}</td>
+                  <td>{scan.firstName}</td>
                   <td>{scan.status === "IN" ? scan.timestamp : "-"}</td>
                   <td>{scan.status === "OUT" ? scan.timestamp : "-"}</td>
                 </tr>
