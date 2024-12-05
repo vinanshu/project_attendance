@@ -42,8 +42,8 @@ function Scan() {
         return;
       }
 
-      const [fname, idNumber, lname] = data.split(" ");
-      if (!fname || !idNumber || !lname ) {
+      const [fname, IDnumber, lname] = data.split(" ");
+      if (!fname || !IDnumber || !lname ) {
         toast.error("QR code data is incomplete.", {
           position: "top-center",
         });
@@ -52,13 +52,14 @@ function Scan() {
 
       const q = query(
         collection(db, "scanHistory"),
-        where("idNumber", "==", idNumber),
+        where("fname", "==", fname),
+        where("idNumber", "==", IDnumber),
         where("status", "==", status)
       );
       const querySnapshot = await getDocs(q);
 
       if (!querySnapshot.empty) {
-        toast.error(`ID ${idNumber} has already been marked as ${status}.`, {
+        toast.error(`ID ${IDnumber} has already been marked as ${status}.`, {
           position: "top-center",
         });
         return;
@@ -66,6 +67,8 @@ function Scan() {
 
       const scanData = {
         name: fname,
+        idNumber: IDnumber,
+        lname: lname,
         status,
         timestamp: new Date().toLocaleString(),
       };
