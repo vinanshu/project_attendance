@@ -95,7 +95,7 @@ function Login() {
         <div className="login-container">
 <div className="back1">
           <form onSubmit={handleSubmit}>
-            <h3>LOGIN</h3>
+            <h3>Login</h3>
 
             <div className="mb-3">
               <label>Email address</label>

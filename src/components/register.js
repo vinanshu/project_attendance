@@ -1,4 +1,4 @@
- import { createUserWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword } from "firebase/auth";
 import React, { useState } from "react";
 import { auth, db } from "../config/firebase";
 import { setDoc, doc, getDocs, collection, query, where } from "firebase/firestore";
@@ -151,9 +151,9 @@ function Register() {
           required
         >
           <option value="">Select Course</option>
-          <option value="BSIT">BSIT</option>
-          <option value="BSTCM">BSTTCM</option>
-          <option value="BSEMT">BSEMT</option>
+          <option value="IT">IT</option>
+          <option value="TCM">TCM</option>
+          <option value="EMT">EMT</option>
         </select>
       </div>
       {/* Year and section selection */}
@@ -166,10 +166,10 @@ function Register() {
           required
         >
           <option value="">Select Year</option>
-          <option value="1ST">1ST</option>
-          <option value="2ND">2ND</option>
-          <option value="3RD">3RD</option>
-          <option value="4TH">4TH</option>
+          <option value="1st">1ST</option>
+          <option value="2nd">2ND</option>
+          <option value="3rd">3RD</option>
+          <option value="4th">4TH</option>
         </select>
         
       </div>
@@ -182,13 +182,13 @@ function Register() {
           required
         >
           <option value="">Select Section</option>
-          <option value="A">section A</option>
-          <option value="B">section B</option>
-          <option value="C">section C</option>
-          <option value="D">section D</option>
-          <option value="E">section E</option>
-          <option value="F">section F</option>
-          <option value="G">section G</option>
+          <option value="A">A</option>
+          <option value="B">B</option>
+          <option value="C">C</option>
+          <option value="D">D</option>
+          <option value="E">E</option>
+          <option value="F">F</option>
+          <option value="G">G</option>
         </select>
       </div>
       
