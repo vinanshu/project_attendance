@@ -66,7 +66,7 @@ function Scan() {
       }
 
       const scanData = {
-        name: fname,
+        firstName: fname,
         idNumber: IDnumber,
         status,
         timestamp: new Date().toLocaleString(),

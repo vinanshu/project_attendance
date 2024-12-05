@@ -103,6 +103,10 @@ function Profile() {
             <p>First Name: {userDetails.firstName}</p>
             <p>Last Name: {userDetails.lastName}</p>
             <p>ID number: {userDetails.ID}</p>
+            <p>year: {userDetails.year}</p>
+            <p>Course: {userDetails.course}</p>
+            <p>section: {userDetails.section}</p>
+            
             {userDetails.qrCode && (
               <div className="qr-code-container">
                 <h5>Your QR Code:</h5>
@@ -130,7 +134,7 @@ function Profile() {
                 <ul>
                   {scanHistory.map((record, index) => (
                     <li key={index}>
-                      {record.timestamp} - <span>{record.status}</span>
+                      {record.timestamp} <span>{record.status}</span>
                     </li>
                   ))}
                 </ul>
