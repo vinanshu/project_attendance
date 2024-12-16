@@ -3,16 +3,16 @@
 
 
 ### Leader
-* * Vince Jeus B. Galamiton
-* * samuel Ruther Ford Demetrio
+*  Vince Jeus B. Galamiton
+*  samuel Ruther Ford Demetrio
 
 
 
 
 ### -MEMBERS
-* * Kimjie Anoc
-* * Gabriel Dianasas
-* * James Carlo Jimenez
-* * Shaquille Cablinda
-* * James togonon
-* * Jumar Sinaya
+*  Kimjie Anoc
+*  Gabriel Dianasas
+*  James Carlo Jimenez
+*  Shaquille Cablinda
+*  James togonon
+*  Jumar Sinaya
