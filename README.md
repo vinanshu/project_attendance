@@ -1,4 +1,4 @@
-### -ATTENDANCE MANAGEMENT SYSTEM
+### ATTENDANCE MANAGEMENT SYSTEM
 
 
 
@@ -9,7 +9,7 @@
 
 
 
-### -MEMBERS
+### MEMBERS
 *  Kimjie Anoc
 *  Gabriel Dianasas
 *  James Carlo Jimenez
